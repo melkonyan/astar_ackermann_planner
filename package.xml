@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>astar_planner</name>
+  <name>astar_ackermann_planner</name>
   <version>0.0.0</version>
   <description>This package implements a A* path planning algorithm that takes non-holonomic constraints of a robot
     into account and can be used with the ROS Navigation Stack</description>
@@ -20,7 +20,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/astar_planner</url> -->
+  <!-- <url type="website">http://wiki.ros.org/astar_ackhermann_planner</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->

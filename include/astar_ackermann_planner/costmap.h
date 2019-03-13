@@ -2,12 +2,12 @@
 // Created by alex on 16.02.19.
 //
 
-#ifndef ASTAR_PLANNER_COSTMAP_H
-#define ASTAR_PLANNER_COSTMAP_H
+#ifndef ASTAR_ACKERMANN_PLANNER_COSTMAP_H
+#define ASTAR_ACKERMANN_PLANNER_COSTMAP_H
 
 #include <costmap_2d/costmap_2d.h>
 
-namespace astar_planner {
+namespace astar_ackermann_planner {
 
     /**
      * Associates costs with the points in the world.
@@ -103,4 +103,4 @@ namespace astar_planner {
         ~CostmapAdapter() override;
     };
 }
-#endif //ASTAR_PLANNER_COSTMAP_H
+#endif //ASTAR_ACKERMANN_PLANNER_COSTMAP_H

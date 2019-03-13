@@ -2,8 +2,8 @@
 // Created by alex on 13.02.19.
 //
 
-#ifndef ASTAR_PLANNER_ASTAR_H
-#define ASTAR_PLANNER_ASTAR_H
+#ifndef ASTAR_ACKERMANN_PLANNER_ASTAR_H
+#define ASTAR_ACKERMANN_PLANNER_ASTAR_H
 
 
 #include <ros/ros.h>
@@ -15,16 +15,16 @@
 #include <vector>
 #include <unordered_map>
 
-#include "astar_planner/costmap.h"
-#include "astar_planner/utils.h"
+#include "astar_ackermann_planner/costmap.h"
+#include "astar_ackermann_planner/utils.h"
 
-namespace astar_planner {
+namespace astar_ackermann_planner {
 
-    class AStarPlanner : public nav_core::BaseGlobalPlanner {
+    class AStarAckermannPlanner : public nav_core::BaseGlobalPlanner {
     public:
-        AStarPlanner();
+        AStarAckermannPlanner();
 
-        ~AStarPlanner();
+        ~AStarAckermannPlanner();
 
         /**
           * Initialization function for the AStarPlanner object
@@ -118,4 +118,4 @@ namespace astar_planner {
 
 }
 
-#endif //ASTAR_PLANNER_ASTAR_H
+#endif //ASTAR_ACKERMANN_PLANNER_ASTAR_H

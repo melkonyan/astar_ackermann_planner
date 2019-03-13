@@ -4,9 +4,9 @@
 #include <tf2/convert.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
-#include "astar_planner/utils.h"
+#include "astar_ackermann_planner/utils.h"
 
-namespace astar_planner {
+namespace astar_ackermann_planner {
 
     Pose::Pose(): Pose(0.0, 0.0, 0.0) {}
 
@@ -32,7 +32,7 @@ namespace astar_planner {
         return pose;
     }
 
-    bool Pose::operator==(const astar_planner::Pose &other) const {
+    bool Pose::operator==(const astar_ackermann_planner::Pose &other) const {
         return x == other.x && y == other.y && th == other.th;
 
     }

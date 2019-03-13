@@ -2,13 +2,13 @@
 // Created by alex on 15.02.19.
 //
 
-#ifndef ASTAR_PLANNER_UTILS_H
-#define ASTAR_PLANNER_UTILS_H
+#ifndef ASTAR_ACKERMANN_PLANNER_UTILS_H
+#define ASTAR_ACKERMANN_PLANNER_UTILS_H
 
 #include <geometry_msgs/PoseStamped.h>
 #include <ostream>
 
-namespace astar_planner {
+namespace astar_ackermann_planner {
 
     /**
      * Container for storing pose of a 2D object in space.
@@ -74,15 +74,15 @@ namespace astar_planner {
 namespace std {
 
     template<>
-    struct hash<astar_planner::Cell> {
-        std::size_t operator()(const astar_planner::Cell &p) const {
+    struct hash<astar_ackermann_planner::Cell> {
+        std::size_t operator()(const astar_ackermann_planner::Cell &p) const {
             return (p.x << 26) + (p.y << 13) + p.th;
         }
     };
 
     template<>
-    struct hash<astar_planner::Pose> {
-        std::size_t operator()(const astar_planner::Pose &pose) const {
+    struct hash<astar_ackermann_planner::Pose> {
+        std::size_t operator()(const astar_ackermann_planner::Pose &pose) const {
             return (size_t(pose.x) << 40) +
                    (size_t(pose.y) << 20) + size_t(pose.th);
         }
@@ -92,4 +92,4 @@ namespace std {
 
 
 
-#endif //ASTAR_PLANNER_UTILS_H
+#endif //ASTAR_ACKERMANN_PLANNER_UTILS_H

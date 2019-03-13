@@ -4,18 +4,18 @@
 #include <costmap_2d/costmap_2d_ros.h>
 #include <vector>
 
-#include "astar_planner/astar_planner.h"
-#include "astar_planner/costmap.h"
-#include "astar_planner/utils.h"
+#include "astar_ackermann_planner/astar_ackermann_planner.h"
+#include "astar_ackermann_planner/costmap.h"
+#include "astar_ackhermann_planner/utils.h"
 
 using ::testing::ElementsAre;
-using astar_planner::Pose;
+using astar_ackermann_planner::Pose;
 
 class AStarPlannerTest : public testing::Test {
 protected:
     void SetUp() override {
         nh = ros::NodeHandle("~/test_planner");
-        costmap = new astar_planner::EmptyCostmap(100, 100, 0.1);
+        costmap = new astar_ackermann_planner::EmptyCostmap(100, 100, 0.1);
     }
 
     void ASSERT_PLANS_EQUAL(const std::vector<Pose> &actual, const std::vector<Pose> &desired) const {
@@ -34,9 +34,9 @@ protected:
         return out.str();
     }
 
-    astar_planner::AStarPlanner planner;
+    astar_ackermann_planner::AStarAckermannPlanner planner;
     ros::NodeHandle nh;
-    astar_planner::Costmap *costmap;
+    astar_ackermann_planner::Costmap *costmap;
 };
 
 
@@ -70,7 +70,7 @@ TEST_F(AStarPlannerTest, testGetNeighbors_FaceBackwards) {
     planner.initialize("test_planner", costmap);
     auto neighbors = planner.getNeighbors(Pose(5, 5, -M_PI));
     std::vector<Pose> poses;
-    auto get_pos = [](astar_planner::PoseWithDist &pos) -> Pose { return pos.pose; };
+    auto get_pos = [](astar_ackermann_planner::PoseWithDist &pos) -> Pose { return pos.pose; };
     std::transform(neighbors.begin(), neighbors.end(), std::back_inserter(poses), get_pos);
     ASSERT_THAT(poses, ElementsAre(Pose(3, 7, -3 * M_PI / 2), Pose(5 - M_PI, 5, -M_PI),
                                    Pose(3, 3, -M_PI / 2)));
@@ -83,7 +83,7 @@ TEST_F(AStarPlannerTest, testGetNeighborsFaceForwards) {
     auto neighbors = planner.getNeighbors(Pose(5, 5, 0));
     std::vector<Pose> poses;
     std::transform(neighbors.begin(), neighbors.end(), std::back_inserter(poses),
-                   [](astar_planner::PoseWithDist pos) { return pos.pose; });
+                   [](astar_ackermann_planner::PoseWithDist pos) { return pos.pose; });
     ASSERT_THAT(poses, ElementsAre(Pose(6, 4, -M_PI / 2), Pose(5 + M_PI / 2, 5, 0),
                                    Pose(6, 6, M_PI / 2)));
 }

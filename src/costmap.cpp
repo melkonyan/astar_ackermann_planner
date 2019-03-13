@@ -1,6 +1,6 @@
-#include "astar_planner/costmap.h"
+#include "astar_ackermann_planner/costmap.h"
 
-namespace astar_planner {
+namespace astar_ackermann_planner {
 
     EmptyCostmap::EmptyCostmap(unsigned int sizeX, unsigned int sizeY, double resolution)
             : sizeX(sizeX), sizeY(sizeY), resolution(resolution) {}
