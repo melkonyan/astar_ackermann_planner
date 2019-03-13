@@ -1,0 +1,7 @@
+<library path="lib/libastar_planner">
+    <class type="astar_planner::AStarPlanner" base_class_type="nav_core::BaseGlobalPlanner">
+        <description>
+            An implementation of non-holonomic A* path planning algorithm.
+        </description>
+    </class>
+</library>
