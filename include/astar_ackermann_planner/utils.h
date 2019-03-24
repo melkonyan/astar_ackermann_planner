@@ -68,7 +68,15 @@ namespace astar_ackermann_planner {
      */
     double euclid_dist(const Pose &pose1, const Pose &pose2);
 
+    /**
+     * Normalize angle to [0, 2pi]
+     */
     double normalize_angle(double angle);
+
+    /**
+     * Compute difference between angles. Will bi in [0, pi].
+     */
+    double angle_diff(double angle1, double angle2);
 }
 
 namespace std {

@@ -5,6 +5,8 @@
 #ifndef ASTAR_ACKERMANN_PLANNER_ASTAR_H
 #define ASTAR_ACKERMANN_PLANNER_ASTAR_H
 
+#include <vector>
+#include <unordered_map>
 
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
@@ -12,8 +14,6 @@
 #include <costmap_2d/costmap_2d_ros.h>
 // Abstract global planner from move_base
 #include <nav_core/base_global_planner.h>
-#include <vector>
-#include <unordered_map>
 
 #include "astar_ackermann_planner/costmap.h"
 #include "astar_ackermann_planner/utils.h"
@@ -59,9 +59,10 @@ namespace astar_ackermann_planner {
          * Get poses reachable from the given pose by integrating a discrete set of controls
          * over a short period of time.
          * @param pos Pose from which to start.
+         * @param step_size all generated neigbours will be step_size meters away from the given pos.
          * @return a vector of reachable poses.
          */
-        std::vector<PoseWithDist> getNeighbors(const Pose &pos) const;
+        std::vector<PoseWithDist> getNeighbors(const Pose &pos, double step_size) const;
 
     private:
         /**
@@ -81,7 +82,7 @@ namespace astar_ackermann_planner {
         /**
          * Estimated distance between two poses.
          */
-        double distEstimate(const Pose &pose1, const Pose &pose2) const;
+        double distToGoalEstimate(const Pose &pose1, const Pose &pose2) const;
 
         /**
          * Snap pose to a costmap cell.
@@ -92,27 +93,43 @@ namespace astar_ackermann_planner {
 
         bool validateParameters() const;
 
+        /**
+         * Compute minimal angular size of a cell required, so that when we make a step,
+         * we don't end up in the same cell.
+         */
+        uint computeAngleDiscretizationLevel(double step_size) const;
+
+        void initHolonomicDistmap();
+
+        void computeHolonomicDistmap();
+
         bool hasReachedGoal(const Pose &pos, const Pose &goal);
 
         bool checkBounds(const Pose &pos) const;
 
-        PoseWithDist goStraight(const Pose &pos) const;
+        Pose goStraight(const Pose &pos, double dist) const;
 
-        PoseWithDist turnLeft(const Pose &pos, double angle) const;
+        Pose turnLeft(const Pose &pos, double angle) const;
 
-        PoseWithDist turnRight(const Pose &pos, double angle) const;
+        Pose turnRight(const Pose &pos, double angle) const;
 
     private:
         std::string name_;
         Costmap *costmap_;
+        std::unique_ptr<PositionCostmap> holonomic_distmap_;
+
         std::string global_frame_;
         ros::Publisher plan_publisher_;
         int max_allowed_time_;
 
         double step_size_;
         double turning_radius_;
-        double goal_tolerance_;
+        double goal_dist_tolerance_;
+        double goal_orientation_tolerance_;
         uint angle_discretization_level_;
+        uint holonomic_distmap_grid_size_;
+        double holonomic_distmap_resolution_;
+        double holonomic_step_size_;
     };
 
 

@@ -6,7 +6,7 @@
 
 #include "astar_ackermann_planner/astar_ackermann_planner.h"
 #include "astar_ackermann_planner/costmap.h"
-#include "astar_ackhermann_planner/utils.h"
+#include "astar_ackermann_planner/utils.h"
 
 using ::testing::ElementsAre;
 using astar_ackermann_planner::Pose;
@@ -66,9 +66,8 @@ TEST_F(AStarPlannerTest, testMakePlan_StraightLine) {
 
 TEST_F(AStarPlannerTest, testGetNeighbors_FaceBackwards) {
     nh.setParam("turning_radius", 2.0);
-    nh.setParam("step_size", M_PI);
     planner.initialize("test_planner", costmap);
-    auto neighbors = planner.getNeighbors(Pose(5, 5, -M_PI));
+    auto neighbors = planner.getNeighbors(Pose(5, 5, -M_PI), M_PI);
     std::vector<Pose> poses;
     auto get_pos = [](astar_ackermann_planner::PoseWithDist &pos) -> Pose { return pos.pose; };
     std::transform(neighbors.begin(), neighbors.end(), std::back_inserter(poses), get_pos);
@@ -78,12 +77,11 @@ TEST_F(AStarPlannerTest, testGetNeighbors_FaceBackwards) {
 
 TEST_F(AStarPlannerTest, testGetNeighborsFaceForwards) {
     nh.setParam("turning_radius", 1.0);
-    nh.setParam("step_size", M_PI / 2);
     planner.initialize("test_planner", costmap);
-    auto neighbors = planner.getNeighbors(Pose(5, 5, 0));
+    auto neighbors = planner.getNeighbors(Pose(5, 5, 0), M_PI / 2);
     std::vector<Pose> poses;
-    std::transform(neighbors.begin(), neighbors.end(), std::back_inserter(poses),
-                   [](astar_ackermann_planner::PoseWithDist pos) { return pos.pose; });
+    auto get_pos = [](astar_ackermann_planner::PoseWithDist &pos) -> Pose { return pos.pose; };
+    std::transform(neighbors.begin(), neighbors.end(), std::back_inserter(poses), get_pos);
     ASSERT_THAT(poses, ElementsAre(Pose(6, 4, -M_PI / 2), Pose(5 + M_PI / 2, 5, 0),
                                    Pose(6, 6, M_PI / 2)));
 }

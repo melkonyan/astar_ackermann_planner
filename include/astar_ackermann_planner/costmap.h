@@ -102,5 +102,78 @@ namespace astar_ackermann_planner {
 
         ~CostmapAdapter() override;
     };
+
+    /**
+     * Associates cost with a position (x, y, th). Is the same as a 3D costmap,
+     * but takes into account modular arithmetic for the angles.
+     */
+
+    class PositionCostmap {
+    private:
+        const uint cells_size_x_, cells_size_y_, cells_size_th_;
+        double origin_x_, origin_y_, origin_th_;
+        const double res_x_, res_y_, res_th_;
+        std::vector<double> costmap_;
+    public:
+        /**
+         * @brief  Constructor for a costmap.
+         * Size of the map in meters can be specified,
+         * however size of the angle dimension is always 2*PI
+         * @param  cells_size_x The x size of the map in cells
+         * @param  cells_size_y The y size of the map in cells
+         * @param  cells_size_th Angle discretization level
+         * @param  res_x The resolution of the map in meters/cell
+         * @param  res_y The resolution of the map in meters/cell
+         * @param  origin_x The x origin of the map
+         * @param  origin_y The y origin of the map
+         * @param  origin_th The orientation
+         * @param  default_value Default Value
+         */
+        PositionCostmap(
+            uint cells_size_x, uint cells_size_y, uint cell_size_th,
+            double res_x, double res_y,
+            double origin_x, double origin_y, double origin_th,
+            double default_value = 0);
+
+        /**
+         * Get cost associated with the given cell.
+         * The cell should be specified in the map coordinates.
+         */
+        double getCost(uint mx, uint my, uint mth) const;
+
+        /**
+         * Set the cost associated with the given cell.
+         * The cell should be specified in the map coordinates.
+         */
+        void setCost(uint mx, uint my, uint mth, double cost);
+
+        /**
+         * Convert world coornidates (in meters) to map coordinates (cell indices)
+         * @return True if world coordinates are within the boundaries of the map.
+         */
+        bool worldToMap(double wx, double wy, double wth, uint &mx, uint &my, uint &mth) const;
+
+        void setOrigin(double origin_x, double origin_y, double origin_th);
+
+        double getOriginX() const;
+
+        double getOriginY() const;
+
+        double getOriginTh() const;
+
+        uint getSizeInCellsX() const;
+
+        uint getSizeInCellsY() const;
+
+        uint getSizeInCellsTh() const;
+
+        double getSizeInMetersX() const;
+
+        double getSizeInMetersY() const;
+
+        double getSizeInRadiansTh() const;
+
+        ~PositionCostmap();
+    };
 }
 #endif //ASTAR_ACKERMANN_PLANNER_COSTMAP_H

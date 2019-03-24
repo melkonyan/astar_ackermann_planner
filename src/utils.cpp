@@ -3,6 +3,8 @@
 #include <tf2/LinearMath/Matrix3x3.h>
 #include <tf2/convert.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <ros/console.h>
+
 
 #include "astar_ackermann_planner/utils.h"
 
@@ -34,7 +36,6 @@ namespace astar_ackermann_planner {
 
     bool Pose::operator==(const astar_ackermann_planner::Pose &other) const {
         return x == other.x && y == other.y && th == other.th;
-
     }
 
     std::ostream& operator<<(std::ostream &out, const Pose &pos) {
@@ -46,17 +47,31 @@ namespace astar_ackermann_planner {
     }
 
     bool PoseWithDist::operator<(const PoseWithDist &other) const {
-        return dist < other.dist;
-}
+        if (dist != other.dist) {
+            return dist < other.dist;
+        }
+        if (pose.x != other.pose.x) {
+            return pose.x < other.pose.x;
+        }
+        if (pose.y != other.pose.y) {
+            return pose.y < other.pose.y;
+        }
+        if (pose.th != other.pose.th) {
+            return pose.th < other.pose.th;
+        }
+        return false;
+    }
 
     double euclid_dist(const Pose &pose1, const Pose &pose2) {
         return sqrt(pow(pose1.x - pose2.x, 2)+ pow(pose1.y - pose2.y, 2));
     }
 
-    /**
-     * Normalize angle to [0, 2pi]
-     */
     double normalize_angle(double angle) {
         return angle >= 0 ? fmod(angle, 2*M_PI) : 2 * M_PI - fmod(fabs(angle), 2*M_PI);
+    }
+
+    double angle_diff(double angle1, double angle2) {
+        double diff = normalize_angle(angle1 - angle2);
+        return diff < M_PI ? diff : M_PI - diff;
     }
 }
